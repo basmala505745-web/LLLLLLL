@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>do u love me?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Caveat:wght@600;700&display=swap');
+
+  :root{
+    --blush: #ffe6ee;
+    --blush-deep: #ffc9dc;
+    --rose: #f07a9a;
+    --rose-deep: #d1567c;
+    --cream: #fffaf8;
+    --ink: #5c3a44;
+    --hair: #f6a8c6;
+    --hair-deep: #ec84ae;
+  }
+
+  *{ box-sizing: border-box; }
+  html, body{ margin:0; height:100%; overflow:hidden; }
+
+  body{
+    font-family:'Quicksand', sans-serif;
+    background: radial-gradient(circle at 30% 15%, var(--blush) 0%, var(--cream) 55%, #fff 100%);
+    color: var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+  }
+
+  .bg-heart{
+    position:fixed;
+    bottom:-12%;
+    opacity:0;
+    animation: driftUp linear infinite;
+    pointer-events:none;
+  }
+  @keyframes driftUp{
+    0%{ transform: translateY(0) translateX(0) rotate(-4deg); opacity:0; }
+    12%{ opacity:.55; }
+    50%{ transform: translateY(-55vh) translateX(12px) rotate(3deg); }
+    88%{ opacity:.35; }
+    100%{ transform: translateY(-105vh) translateX(-8px) rotate(-2deg); opacity:0; }
+  }
+
+  .screen{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    padding: 24px;
+    text-align:center;
+  }
+  .hidden{ display:none; }
+
+  /* ---------- SCREEN 0 : intro girl ---------- */
+  .girl{
+    width: min(230px, 60vw);
+    height: auto;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUp .8s ease .1s forwards, sway 4s ease-in-out .9s infinite;
+  }
+  @keyframes sway{
+    0%,100%{ transform: translateY(0) rotate(-1deg); }
+    50%{ transform: translateY(-6px) rotate(1deg); }
+  }
+  .kiss-heart{
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: flyHeart 2.6s ease-in-out infinite;
+  }
+  @keyframes flyHeart{
+    0%{ transform: translate(0,0) scale(.4); opacity:0; }
+    15%{ opacity:1; transform: translate(3px,-6px) scale(.6); }
+    60%{ transform: translate(20px,-34px) scale(.8); opacity:.85; }
+    100%{ transform: translate(28px,-50px) scale(.35); opacity:0; }
+  }
+
+  #intro-msg{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size: clamp(30px, 6.5vw, 48px);
+    color: var(--rose-deep);
+    margin-top: 10px;
+    opacity: 0;
+    animation: fadeUp .8s ease .35s forwards;
+  }
+  #intro-sub{
+    font-size: 15px;
+    color: var(--ink);
+    opacity: 0;
+    margin-top: 4px;
+    animation: fadeUp .8s ease .6s forwards;
+  }
+  .next-arrow{
+    width: 30px;
+    margin-top: 22px;
+    cursor: pointer;
+    opacity: 0;
+    animation: fadeUp .8s ease .85s forwards, nudgeArrow 1.6s ease-in-out 1.5s infinite;
+    transition: transform .2s ease;
+  }
+  @keyframes nudgeArrow{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(5px); }
+  }
+
+  /* ---------- SCREEN 1 : question ---------- */
+  .hero-heart{
+    width: 78px;
+    height: auto;
+    margin-bottom: 4px;
+    animation: breathe 3.2s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%,100%{ transform: scale(1); filter: drop-shadow(0 4px 10px rgba(209,86,124,.18)); }
+    50%{ transform: scale(1.045); filter: drop-shadow(0 6px 16px rgba(209,86,124,.28)); }
+  }
+
+  #q-title{
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight:700;
+    margin: 4px 0 8px;
+    letter-spacing: .3px;
+    min-height: 1.3em;
+    transition: opacity .35s ease;
+  }
+
+  .nudge-text{
+    min-height: 24px;
+    font-family:'Caveat', cursive;
+    font-size: 24px;
+    color: var(--rose-deep);
+    margin-bottom: 26px;
+    opacity: 0;
+    transition: opacity .4s ease;
+  }
+  .nudge-text.show{ opacity: 1; }
+
+  .btn-row{
+    position:relative;
+    display:flex;
+    gap: 22px;
+    align-items:center;
+    justify-content:center;
+    min-height: 90px;
+    width: min(560px, 90vw);
+  }
+
+  .btn{
+    border:none;
+    border-radius: 999px;
+    font-family:'Quicksand', sans-serif;
+    font-weight:700;
+    font-size: 19px;
+    padding: 16px 34px;
+    cursor:pointer;
+    transition: transform .2s ease, box-shadow .2s ease, left .35s cubic-bezier(.22,.61,.36,1), top .35s cubic-bezier(.22,.61,.36,1);
+  }
+  .btn:active{ transform: scale(.95); }
+
+  .btn-yes{
+    background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+    color:#fff;
+    box-shadow: 0 8px 20px rgba(209,86,124,.3);
+  }
+  .btn-yes:hover{ transform: translateY(-2px); box-shadow: 0 12px 24px rgba(209,86,124,.4); }
+
+  .btn-no{
+    background: #fff;
+    color: var(--rose-deep);
+    border: 2px solid var(--blush-deep);
+  }
+  .btn-no.escaping{ position: fixed; }
+
+  /* ---------- SCREEN 2 : so you do love me huh ---------- */
+  .mid-heart{
+    width: 96px;
+    height: auto;
+    opacity: 0;
+    transform: scale(.85);
+    animation: settleIn .9s cubic-bezier(.2,.7,.3,1) forwards;
+  }
+  #soyoudo-msg{
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight:700;
+    margin: 4px 0 8px;
+    letter-spacing: .3px;
+    min-height: 1.3em;
+    opacity: 0;
+    animation: fadeUp .8s ease .2s forwards;
+  }
+
+  /* ---------- SCREEN 3 : yes reveal ---------- */
+  .big-heart{
+    width: 130px;
+    height: auto;
+    opacity: 0;
+    transform: scale(.85);
+    animation: settleIn .9s cubic-bezier(.2,.7,.3,1) forwards;
+  }
+  @keyframes settleIn{
+    0%{ opacity:0; transform: scale(.85) translateY(8px); }
+    100%{ opacity:1; transform: scale(1) translateY(0); }
+  }
+
+  #yes-msg{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size: clamp(30px, 6vw, 46px);
+    color: var(--rose-deep);
+    margin: 14px 0 6px;
+    max-width: 640px;
+    opacity: 0;
+    animation: fadeUp .8s ease .3s forwards;
+  }
+  #yes-sub{
+    font-size: 17px;
+    color: var(--ink);
+    opacity: 0;
+    max-width: 480px;
+    animation: fadeUp .8s ease .55s forwards;
+  }
+  #hesitate-note{
+    font-family:'Caveat', cursive;
+    font-size: 22px;
+    color: var(--rose);
+    margin-top: 8px;
+    opacity: 0;
+    animation: fadeUp .8s ease .75s forwards;
+  }
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(6px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  .envelope{
+    width: 56px;
+    height: auto;
+    margin-top: 20px;
+    cursor:pointer;
+    opacity: 0;
+    animation: fadeUp .8s ease 1s forwards;
+    transition: transform .25s ease;
+  }
+  .envelope:hover{ transform: translateY(-3px) scale(1.05); }
+
+  /* ---------- SCREEN 4 : kiss ---------- */
+  #screen-kiss{
+    overflow-y: auto;
+    padding: 32px 24px;
+    max-height: 100%;
+  }
+  .kiss-glow{
+    position: relative;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width: 190px;
+    height: 190px;
+    flex-shrink: 0;
+  }
+  .kiss-glow::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background: radial-gradient(circle, rgba(255,201,220,.65) 0%, rgba(255,201,220,.25) 45%, rgba(255,201,220,0) 72%);
+    border-radius: 50%;
+    animation: glowPulse 2.6s ease-in-out infinite;
+  }
+  @keyframes glowPulse{
+    0%,100%{ transform: scale(1); opacity:.9; }
+    50%{ transform: scale(1.08); opacity:1; }
+  }
+  #kiss-emoji{
+    font-size: 108px;
+    line-height: 1;
+    opacity: 0;
+    transform: scale(.9);
+    animation: settleIn 1s cubic-bezier(.2,.7,.3,1) forwards;
+    filter: drop-shadow(0 10px 18px rgba(209,86,124,.35));
+  }
+
+  /* MWAAHH big, rest of the message smaller underneath, filling the screen width */
+  #kiss-msg-big{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size: clamp(56px, 14vw, 110px);
+    color: var(--rose-deep);
+    margin-top: 8px;
+    letter-spacing: .5px;
+    line-height: 1;
+    opacity: 0;
+    animation: fadeUp .9s ease .35s forwards;
+  }
+  #kiss-msg-small{
+    font-family:'Quicksand', sans-serif;
+    font-weight:600;
+    font-size: clamp(15px, 2.3vw, 19px);
+    line-height: 1.6;
+    color: var(--ink);
+    margin: 18px auto 0;
+    max-width: 680px;
+    width: 100%;
+    opacity: 0;
+    animation: fadeUp 1s ease .7s forwards;
+  }
+
+  .sparkle{
+    position:absolute;
+    opacity:0;
+    animation: twinkle 2.2s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes twinkle{
+    0%,100%{ opacity:0; transform: scale(.5); }
+    50%{ opacity:.8; transform: scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bg-hearts"></div>
+
+<!-- SCREEN 0 : intro -->
+<div class="screen" id="screen-intro">
+  <svg class="girl" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
+    <path d="M40 95C34 60 55 24 100 24C145 24 166 60 160 95L156 140C156 140 150 118 148 100C146 118 142 132 132 138C136 120 132 102 128 96C124 112 116 124 100 126C84 124 76 112 72 96C68 102 64 120 68 138C58 132 54 118 52 100C50 118 44 140 44 140Z"
+      fill="url(#hairGrad)" stroke="#d1567c" stroke-width="2.5" stroke-linejoin="round"/>
+    <ellipse cx="100" cy="112" rx="46" ry="48" fill="#fff3ee" stroke="#d1567c" stroke-width="2.5"/>
+    <ellipse cx="72" cy="126" rx="9" ry="6" fill="#f6a8c6" opacity="0.7"/>
+    <ellipse cx="128" cy="126" rx="9" ry="6" fill="#f6a8c6" opacity="0.7"/>
+    <ellipse cx="78" cy="110" rx="11" ry="14" fill="#fff"/>
+    <ellipse cx="122" cy="110" rx="11" ry="14" fill="#fff"/>
+    <ellipse cx="78" cy="113" rx="8" ry="10" fill="#d1567c"/>
+    <ellipse cx="122" cy="113" rx="8" ry="10" fill="#d1567c"/>
+    <circle cx="75" cy="108" r="2.6" fill="#fff"/>
+    <circle cx="119" cy="108" r="2.6" fill="#fff"/>
+    <circle cx="81" cy="118" r="1.6" fill="#fff"/>
+    <circle cx="125" cy="118" r="1.6" fill="#fff"/>
+    <path d="M68 92C72 88 82 87 88 90" stroke="#d1567c" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M132 92C128 88 118 87 112 90" stroke="#d1567c" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M92 138C96 146 104 146 108 138C104 141 96 141 92 138Z" fill="#d1567c"/>
+    <path d="M56 78C52 62 62 40 78 34C72 48 70 62 74 76Z" fill="url(#hairGrad2)" stroke="#d1567c" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M144 78C148 62 138 40 122 34C128 48 130 62 126 76Z" fill="url(#hairGrad2)" stroke="#d1567c" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M100 24C90 30 84 46 88 62C94 50 98 40 100 24Z" fill="url(#hairGrad2)" stroke="#d1567c" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M40 60L42 66L48 68L42 70L40 76L38 70L32 68L38 66Z" fill="#f6a8c6"/>
+    <path d="M164 100L165.5 104L170 105.5L165.5 107L164 111L162.5 107L158 105.5L162.5 104Z" fill="#f6a8c6"/>
+    <defs>
+      <linearGradient id="hairGrad" x1="40" y1="24" x2="160" y2="190" gradientUnits="userSpaceOnUse">
+        <stop stop-color="var(--hair)"/>
+        <stop offset="1" stop-color="var(--hair-deep)"/>
+      </linearGradient>
+      <linearGradient id="hairGrad2" x1="56" y1="34" x2="144" y2="78" gradientUnits="userSpaceOnUse">
+        <stop stop-color="var(--hair)"/>
+        <stop offset="1" stop-color="var(--hair-deep)"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  <div id="intro-msg">Hiiiii i missed u a lot baby</div>
+  <div id="intro-sub">click here</div>
+  <svg class="next-arrow" id="to-question" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 9L12 15L18 9" stroke="#d1567c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</div>
+
+<!-- SCREEN 1 : question -->
+<div class="screen hidden" id="screen-question">
+  <svg class="hero-heart" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 82C50 82 8 55 8 27C8 12 20 3 33 3C41 3 47 8 50 15C53 8 59 3 67 3C80 3 92 12 92 27C92 55 50 82 50 82Z"
+      fill="url(#heroGrad)" stroke="#d1567c" stroke-width="2.5" stroke-linejoin="round"/>
+    <defs>
+      <linearGradient id="heroGrad" x1="8" y1="3" x2="92" y2="82" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffd3e0"/>
+        <stop offset="1" stop-color="#f4a0bd"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  <h1 id="q-title">do u love me??</h1>
+  <div class="nudge-text" id="nudge">&nbsp;</div>
+  <div class="btn-row">
+    <button class="btn btn-yes" id="yes-btn">yes</button>
+    <span id="no-wrap"><button class="btn btn-no" id="no-btn">no</button></span>
+  </div>
+</div>
+
+<!-- SCREEN 2 : so you do love me huh -->
+<div class="screen hidden" id="screen-soyoudo">
+  <svg class="mid-heart" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 82C50 82 8 55 8 27C8 12 20 3 33 3C41 3 47 8 50 15C53 8 59 3 67 3C80 3 92 12 92 27C92 55 50 82 50 82Z"
+      fill="url(#midGrad)" stroke="#d1567c" stroke-width="2.5" stroke-linejoin="round"/>
+    <defs>
+      <linearGradient id="midGrad" x1="8" y1="3" x2="92" y2="82" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffd3e0"/>
+        <stop offset="1" stop-color="#f4a0bd"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  <div id="soyoudo-msg">so you do love me huh?</div>
+  <div class="nudge-text" id="nudge2">&nbsp;</div>
+  <div class="btn-row">
+    <button class="btn btn-yes" id="yes-btn2">yes</button>
+    <span id="no-wrap2"><button class="btn btn-no" id="no-btn2">no</button></span>
+  </div>
+</div>
+
+<!-- SCREEN 3 : yes reveal -->
+<div class="screen hidden" id="screen-yes">
+  <svg class="big-heart" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 82C50 82 8 55 8 27C8 12 20 3 33 3C41 3 47 8 50 15C53 8 59 3 67 3C80 3 92 12 92 27C92 55 50 82 50 82Z"
+      fill="url(#bigGrad)" stroke="#d1567c" stroke-width="2.5" stroke-linejoin="round"/>
+    <defs>
+      <linearGradient id="bigGrad" x1="8" y1="3" x2="92" y2="82" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffc2d6"/>
+        <stop offset="1" stop-color="#ec7ea3"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  <div id="yes-msg">i knew u doo baby, i love u moreee</div>
+  <div id="yes-sub">click here</div>
+  <div id="hesitate-note"></div>
+  <svg class="envelope" id="to-kiss" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="8" width="92" height="58" rx="6" fill="#fff" stroke="#d1567c" stroke-width="2.5"/>
+    <path d="M6 12L50 45L94 12" stroke="#d1567c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M50 45C50 45 44 38 44 34C44 31.2 46.2 29 49 29C50.3 29 51.4 29.6 50 31.5C48.6 29.6 49.7 29 51 29C53.8 29 56 31.2 56 34C56 38 50 45 50 45Z" fill="#d1567c"/>
+  </svg>
+</div>
+
+<!-- SCREEN 4 : kiss -->
+<div class="screen hidden" id="screen-kiss">
+  <div class="kiss-glow"><div id="kiss-emoji">&#128139;</div></div>
+  <div id="kiss-msg-big">MWAAHHH</div>
+  <div id="kiss-msg-small">i want you to know how precious you are to me, and how much i care about you,
+how much i love you, how much i miss you, how much i wanna be with you, and god you have no idea
+how much i want to kiss the hell outta you and how much i want to hug you till u break ur bones,
+how much i want to hold your hand, how much i crave ur touch, and how much i want to be your everything,
+i never want to let you go, and i never will, and i want you to know that i will always be here for you,and i will always care about you,
+and i will never let you go (well unless under certain circumstances TT)
+and i will never stop caring about you, i just never felt like this before, it got some mixed feelings
+but i don't think i hate any of it as long as it's you darling 
+i wish that i make you happy as much as you make me , you mean a lot to me </div>
+</div>
+
+<script>
+  const bg = document.getElementById('bg-hearts');
+  const heartSVG = (grad) => `
+    <svg width="${18 + Math.random()*16}" height="${18 + Math.random()*16}" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 82C50 82 8 55 8 27C8 12 20 3 33 3C41 3 47 8 50 15C53 8 59 3 67 3C80 3 92 12 92 27C92 55 50 82 50 82Z"
+        fill="${grad}" stroke="#e88aa8" stroke-width="3"/>
+    </svg>`;
+  const fills = ['#ffd3e0','#ffc2d6','#f4a8c2'];
+  for(let i=0;i<14;i++){
+    const wrap = document.createElement('div');
+    wrap.className = 'bg-heart';
+    wrap.style.left = Math.random()*100 + 'vw';
+    wrap.style.animationDuration = (9 + Math.random()*8) + 's';
+    wrap.style.animationDelay = (Math.random()*9) + 's';
+    wrap.innerHTML = heartSVG(fills[Math.floor(Math.random()*fills.length)]);
+    bg.appendChild(wrap);
+  }
+
+  const screenIntro = document.getElementById('screen-intro');
+  const screenQ = document.getElementById('screen-question');
+  const screenSoyoudo = document.getElementById('screen-soyoudo');
+  const screenYes = document.getElementById('screen-yes');
+  const screenKiss = document.getElementById('screen-kiss');
+
+  const qTitle = document.getElementById('q-title');
+  const hesitateNote = document.getElementById('hesitate-note');
+
+  let titleSwapped = false;
+  let q1NoClicks = 0;
+
+  function rectsOverlap(a, b, pad){
+    return !(a.right + pad < b.left || a.left - pad > b.right || a.bottom + pad < b.top || a.top - pad > b.bottom);
+  }
+
+  function setupNoButton(noBtn, nudgeEl, messages, onCount, avoidEls){
+    let count = 0;
+    function moveNoButton(){
+      noBtn.classList.add('escaping');
+      const btnW = noBtn.offsetWidth;
+      const btnH = noBtn.offsetHeight;
+      const maxX = window.innerWidth - btnW - 16;
+      const maxY = window.innerHeight - btnH - 16;
+
+      const avoidRects = (avoidEls || [])
+        .filter(el => el)
+        .map(el => el.getBoundingClientRect());
+
+      let x, y, tries = 0, ok = false;
+      while(tries < 50 && !ok){
+        x = Math.max(16, Math.random() * maxX);
+        y = Math.max(16, Math.random() * maxY);
+        const candidate = { left: x, right: x + btnW, top: y, bottom: y + btnH };
+        ok = avoidRects.every(r => !rectsOverlap(candidate, r, 14));
+        tries++;
+      }
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+
+      count++;
+      nudgeEl.textContent = messages[Math.min(count-1, messages.length-1)];
+      nudgeEl.classList.add('show');
+      if(onCount) onCount(count);
+    }
+    noBtn.addEventListener('mouseenter', moveNoButton);
+    noBtn.addEventListener('click', (e) => { e.preventDefault(); moveNoButton(); });
+    noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNoButton(); }, {passive:false});
+  }
+
+  document.getElementById('to-question').addEventListener('click', () => {
+    screenIntro.classList.add('hidden');
+    screenQ.classList.remove('hidden');
+
+    setTimeout(() => {
+      if(titleSwapped) return;
+      titleSwapped = true;
+      qTitle.style.opacity = 0;
+      setTimeout(() => {
+        qTitle.textContent = ' I mean miss ..Do you miss me?';
+        qTitle.style.opacity = 1;
+      }, 350);
+    }, 1000);
+  });
+
+  const nudges1 = [
+    "hmm try again",
+    "nuh-uh, wrong answer",
+    "the no button doesn't want to be picked darling",
+    "خخخخخخخخ",
+    "just say yes already",
+    "it's getting tired of running (and so am i)",
+    "i know u love me, just say it",
+    "i'll wait for u to say yes",
+  ];
+  setupNoButton(
+    document.getElementById('no-btn'),
+    document.getElementById('nudge'),
+    nudges1,
+    (count) => { q1NoClicks = count; },
+    [
+      document.querySelector('#screen-question .hero-heart'),
+      qTitle,
+      document.getElementById('nudge'),
+      document.getElementById('yes-btn')
+    ]
+  );
+
+  document.getElementById('yes-btn').addEventListener('click', () => {
+    screenQ.classList.add('hidden');
+    screenSoyoudo.classList.remove('hidden');
+    if(q1NoClicks === 0){
+      hesitateNote.textContent = "ohh so no hesitate";
+    }
+  });
+
+  const soyoudoMsg = document.getElementById('soyoudo-msg');
+  const nudges2 = [
+    "hmm try again",
+    " ??? you're not fooling anyone yk",
+    "sure honey, keep pretending",
+    "i know u love me, just say it",
+    "the truth doesn't hide forever",
+    "you'll admit it eventually",
+    "denial looks good on you",
+    "i can see it in your eyes (prettiest eyes i've ever seen btw)",
+    "i can sense it in your soul (that belongs to me)",
+    "i can see it in your smile (that lights up when you see me)",
+    "just remember who you belong to while you keep denying it",
+    "yk i can wait forever but i dont take no for an answer",
+  ];
+  setupNoButton(
+    document.getElementById('no-btn2'),
+    document.getElementById('nudge2'),
+    nudges2,
+    () => { soyoudoMsg.textContent = "so you do love me huh?"; },
+    [
+      document.querySelector('#screen-soyoudo .mid-heart'),
+      soyoudoMsg,
+      document.getElementById('nudge2'),
+      document.getElementById('yes-btn2')
+    ]
+  );
+
+  document.getElementById('yes-btn2').addEventListener('click', () => {
+    screenSoyoudo.classList.add('hidden');
+    screenYes.classList.remove('hidden');
+  });
+
+  document.getElementById('to-kiss').addEventListener('click', () => {
+    screenYes.classList.add('hidden');
+    screenKiss.classList.remove('hidden');
+
+    const container = screenKiss;
+    for(let i=0;i<8;i++){
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.style.left = (10 + Math.random()*80) + '%';
+      s.style.top = (10 + Math.random()*80) + '%';
+      s.style.animationDelay = (Math.random()*1.6) + 's';
+      s.innerHTML = `<svg width="14" height="14" viewBox="0 0 20 20"><path d="M10 0L12 8L20 10L12 12L10 20L8 12L0 10L8 8Z" fill="#e88aa8"/></svg>`;
+      container.appendChild(s);
+    }
+  });
+</script>
+</body>
+</html>
